@@ -1,0 +1,105 @@
+{
+	"info": {
+		"_postman_id": "150f0296-6a75-419c-929d-d6d63200b2ba",
+		"name": "Tourist",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Create new tourist",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"id": "92634291-d62b-4ff9-b4d9-71b2d0ca59d3",
+						"exec": [
+							"const randomNum = Math.floor((Math.random()*100 +1))",
+							"pm.globals.set(\"randomNum\", randomNum)"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"tourist_name\": \"Majdi Lada\",\n    \"tourist_email\": \"example{{randomNum}}@email.com\",\n    \"tourist_location\": \"Palestine\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseUrl}}/{{tourist}}",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"{{tourist}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Create new tourist - duplicate email",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"id": "83ab95b6-cc39-40ae-b641-9939bcd59309",
+						"exec": [
+							"const randomNum = Math.floor((Math.random()*100 +1))",
+							"pm.globals.set(\"randomNum\", randomNum)"
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"id": "13ad7078-c290-4817-97b1-dea262a94ce7",
+						"exec": [
+							"pm.test('Verify status code is 400', function() {",
+							"    pm.response.to.have.status(400)",
+							"})",
+							"",
+							"pm.test('Verify proper error message is returned', function() {",
+							"    const response  = pm.response.json();",
+							"    pm.expect(response.Message).to.equal(\"Pleae try with different email address!\")",
+							"})"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"tourist_name\": \"Majdi Lada\",\n    \"tourist_email\": \"example@email.com\",\n    \"tourist_location\": \"Palestine\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseUrl}}/{{tourist}}",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"{{tourist}}"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"protocolProfileBehavior": {}
+}
